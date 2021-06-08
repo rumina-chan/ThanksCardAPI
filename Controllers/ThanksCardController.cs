@@ -33,6 +33,20 @@ namespace ThanksCardAPI.Controllers
         }
         #endregion
 
+        // GET: api/ThanksCard/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ThanksCard>> GetThanksCard(long id)
+        {
+            var thanksCard = await _context.ThanksCards.FindAsync(id);
+
+            if (thanksCard == null)
+            {
+                return NotFound();
+            }
+
+            return thanksCard;
+        }
+
         // POST api/ThanksCard
         [HttpPost]
         public async Task<ActionResult<ThanksCard>> Post([FromBody] ThanksCard thanksCard)
@@ -45,6 +59,60 @@ namespace ThanksCardAPI.Controllers
             await _context.SaveChangesAsync();
             // TODO: Error Handling
             return thanksCard;
+        }
+
+        // PUT: api/Users/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutThanksCard(long id, ThanksCard thanksCard)
+        {
+            if (id != thanksCard.Id)
+            {
+                return BadRequest();
+            }
+
+            // Department には既に存在しているユーザが入るため、更新の対象から外す。
+            //_context.Departments.Attach(user.Department);
+
+            _context.Entry(thanksCard).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ThanksCardExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/ThanksCards/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ThanksCard>> DeleteThanksCard([FromBody] ThanksCard thanksCard)
+        {
+            var thankscard = await _context.ThanksCards.FindAsync(thanksCard);
+            if (thankscard == null)
+            {
+                return NotFound();
+            }
+
+            _context.ThanksCards.Remove(thanksCard);
+            await _context.SaveChangesAsync();
+
+            return thankscard;
+        }
+
+        private bool ThanksCardExists(long id)
+        {
+            return _context.ThanksCards.Any(e => e.Id == id);
         }
     }       
 }
