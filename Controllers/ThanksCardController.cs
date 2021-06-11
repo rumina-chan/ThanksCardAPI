@@ -94,12 +94,12 @@ namespace ThanksCardAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ThanksCards/5
+
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ThanksCard>> DeleteThanksCard([FromBody] ThanksCard thanksCard)
+        public async Task<ActionResult<ThanksCard>> DeleteThanksCard(long id)
         {
-            var thankscard = await _context.ThanksCards.FindAsync(thanksCard);
-            if (thankscard == null)
+            var thanksCard = await _context.ThanksCards.FindAsync(id);
+            if (thanksCard == null)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace ThanksCardAPI.Controllers
             _context.ThanksCards.Remove(thanksCard);
             await _context.SaveChangesAsync();
 
-            return thankscard;
+            return thanksCard;
         }
 
         private bool ThanksCardExists(long id)
