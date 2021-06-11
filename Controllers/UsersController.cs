@@ -24,13 +24,12 @@ namespace ThanksCardAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            // Include を指定することで Department (Department) を同時に取得する。
+            // Include を指定することで DepartmentChildren (DepartmentChildren) を同時に取得する。
             return await _context.Users
-                                    .Include(User => User.Department)
+                                    .Include(User => User.DepartmentChildren)
                                     .ToListAsync();
             //return await _context.Users.ToListAsync();
         }
-
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(long id)
@@ -44,6 +43,7 @@ namespace ThanksCardAPI.Controllers
 
             return user;
         }
+        
 
         // PUT: api/Users/5
         [HttpPut("{id}")]

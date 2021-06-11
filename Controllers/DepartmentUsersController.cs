@@ -32,7 +32,7 @@ namespace ThanksCardAPI.Controllers
             else
             {
                 return await _context.Users
-                                        .Where(u => u.DepartmentId == DepartmentId)
+                                        .Where(u => u.DepartmentChildrenId == DepartmentId)
                                         .ToListAsync();
             }
         }
